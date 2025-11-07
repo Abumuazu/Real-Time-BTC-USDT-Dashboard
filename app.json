@@ -1,0 +1,8 @@
+{
+  "android": {
+    "package": "com.topship.btcapp"
+  },
+  "ios": {
+    "bundleIdentifier": "com.topship.btcapp"
+  }
+}
