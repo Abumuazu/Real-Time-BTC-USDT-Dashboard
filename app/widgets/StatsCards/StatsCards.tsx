@@ -23,7 +23,12 @@ export const StatsCards: React.FC = () => {
   const changeTone: "up" | "down" | "neutral" = change > 0 ? "up" : change < 0 ? "down" : "neutral"
   const changeValue = useMemo(() => `${(change * 100).toFixed(2)}%`, [change])
   const turnoverValue = useMemo(() => `$${formatCompact(data.turnover24h)}`, [data.turnover24h])
-  const volumeValue = useMemo(() => `${formatCompact(data.volume24h)} BTC`, [data.volume24h])
+  const volumeUsdValue = useMemo(() => {
+    if (!data.volume24h || !data.turnover24h) return "$0.00"
+    const avgPrice = data.turnover24h / data.volume24h
+    const usdVolume = data.volume24h * avgPrice
+    return `$${formatCompact(usdVolume)}`
+  }, [data.volume24h, data.turnover24h])
 
   return (
     <ThemedView style={styles.row}>
@@ -31,7 +36,7 @@ export const StatsCards: React.FC = () => {
       <Card title="24h High" value={data.high24h} />
       <Card title="24h Low" value={data.low24h} />
       <Card title="24h Turnover" value={turnoverValue} />
-      <Card title="24h Volume" value={volumeValue} />
+      <Card title="24h Volume" value={volumeUsdValue} />
       <Card
         title="24h Change"
         value={changeValue}

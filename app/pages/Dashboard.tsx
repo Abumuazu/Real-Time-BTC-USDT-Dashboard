@@ -25,15 +25,7 @@ export const Dashboard: React.FC = () => {
   const hasSeededSnapshot = useRef(false)
   const [snapshotRetryToken, setSnapshotRetryToken] = useState(0)
 
-  useEffect(() => {
-    if (__DEV__) {
-      console.log("[Dashboard] query status", {
-        hasData: !!data,
-        queryStatus,
-        points: points.length,
-      })
-    }
-  }, [data, queryStatus, points.length])
+
 
   useEffect(() => {
     const needsSnapshot =
