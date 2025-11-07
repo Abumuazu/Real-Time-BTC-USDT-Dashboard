@@ -39,6 +39,7 @@ export class BybitWS {
     }
     this.ws.onmessage = (e) => {
       const data = this.parseMessage(e.data)
+      console.log("data", data)
       if (!data) return
       if (data?.op === "ping") {
         if (__DEV__) {

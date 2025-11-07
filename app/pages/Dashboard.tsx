@@ -36,7 +36,14 @@ export const Dashboard: React.FC = () => {
   }, [data, queryStatus, points.length])
 
   useEffect(() => {
-    if (data) {
+    const needsSnapshot =
+      !data ||
+      data.low24h <= 0 ||
+      data.high24h <= 0 ||
+      data.turnover24h <= 0 ||
+      data.volume24h <= 0
+
+    if (!needsSnapshot) {
       hasSeededSnapshot.current = true
       return
     }
@@ -49,7 +56,21 @@ export const Dashboard: React.FC = () => {
     fetchTickerSnapshot("BTCUSDT")
       .then((snapshot) => {
         if (!cancelled) {
-          queryClient.setQueryData(["ticker", "BTCUSDT"], snapshot)
+          queryClient.setQueryData(["ticker", "BTCUSDT"], (prev: any) => {
+            const merged = {
+              ...(prev ?? {}),
+              ...snapshot,
+              last: snapshot.last || prev?.last || 0,
+              mark: snapshot.mark || prev?.mark || 0,
+              high24h: snapshot.high24h || prev?.high24h || 0,
+              low24h: snapshot.low24h || prev?.low24h || 0,
+              turnover24h: snapshot.turnover24h || prev?.turnover24h || 0,
+              volume24h: snapshot.volume24h || prev?.volume24h || 0,
+              change24h: snapshot.change24h || prev?.change24h || 0,
+              ts: snapshot.ts,
+            }
+            return merged
+          })
         }
       })
       .catch((error) => {

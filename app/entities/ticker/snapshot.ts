@@ -42,6 +42,7 @@ export async function fetchTickerSnapshot(symbol: string): Promise<Ticker> {
   }
 
   const item = json.result?.list?.[0]
+  // console.log("item", item)
   if (!item) {
     throw new Error("Snapshot payload missing ticker data")
   }
