@@ -142,6 +142,7 @@ const styles = StyleSheet.create({
     height: 500,
     borderRadius: 12,
     overflow: "hidden",
+    marginVertical: 16,
   },
   webview: {
     height: 500,
